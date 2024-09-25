@@ -31,6 +31,32 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func onButtonPressed(_ sender: UIButton) {
+        let controller = UIAlertController(title: "Are you sure?", message: nil, preferredStyle: .actionSheet)
+        
+        let yesAction = UIAlertAction(title: "Yes, I'm Sure", style: .destructive, handler: {
+            action in let msg = self.nameField.text!.isEmpty ? "You can breathe easy, everything went OK." : "You can breathe easy, \(String(describing: self.nameField.text))," + "everything went OK."
+            let controller2 = UIAlertController(title: "Something was done", message: msg, preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "Phew!", style: .cancel, handler: nil)
+            controller2.addAction(cancelAction)
+            self.present(controller2, animated: true, completion: nil)
+        })
+        
+        let noAction = UIAlertAction(title: "No way!", style: .cancel, handler: nil)
+        
+        controller.addAction(yesAction)
+        controller.addAction(noAction)
+        
+        if let ppc = controller.popoverPresentationController {
+            ppc.sourceView = sender
+            ppc.sourceRect = sender.bounds
+            ppc.permittedArrowDirections = .down
+        }
+        
+        present(controller, animated: true, completion: nil)
+    }
+    
+    
     
     @IBAction func onSliderChange(_ sender: UISlider) {
         sliderLabel.text = "\(lroundf(sender.value))"
